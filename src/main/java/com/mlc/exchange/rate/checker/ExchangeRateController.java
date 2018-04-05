@@ -1,11 +1,10 @@
 package com.mlc.exchange.rate.checker;
 
-import java.util.List;
-
-import javax.websocket.server.PathParam;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,16 +15,23 @@ public class ExchangeRateController {
     @Autowired
     private ExchangeRateRepository repository;
 
-    @GetMapping(path = { "/exchange/rate", "/exchange/rate/" }, produces = "application/json")
-    public ExchangeRate getLatest() {
-        return repository.findAll().iterator().next();
+    @Autowired
+    private ExchangeRateManager exchangeRateManager;
 
+    @GetMapping(produces = "application/json")
+    public Map<String, Object> getLatest() {
+        return exchangeRateManager.getLatestExchangeRate();
+    }
+
+    @GetMapping(path = { "/all", "/all/" }, produces = "application/json")
+    public Iterable<ExchangeRate> getAll() {
+        return repository.findAll();
     }
 
     @GetMapping(path = { "/{startDate}/{endDate}", "/{startDate}/{endDate}/" }, produces = "application/json")
-    public List<ExchangeRate> getByPeriod(@PathParam("startDate") String startDate, @PathParam("endDate") String endDate) {
+    public Map<String, Object> getByPeriod(@PathVariable("startDate") String startDate, @PathVariable("endDate") String endDate) {
 
-        return repository.findByQuotationDateBetween(startDate, endDate);
+        return exchangeRateManager.getExchangeRate(startDate, endDate);
 
     }
 

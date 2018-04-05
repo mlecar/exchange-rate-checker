@@ -1,18 +1,24 @@
 package com.mlc.exchange.rate.checker;
 
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.springframework.stereotype.Service;
 
 @Service
 public class MockedExchangeRateService {
 
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
     public Map<String, Object> exchangeRate(String from, String to) {
 
         Map<String, Object> result = new HashMap<String, Object>();
-        result.put("date", "2018-04-04");
-        result.put("rate", "1.2390");
+        result.put("date", sdf.format(new Date()));
+        result.put("rate", new BigDecimal(ThreadLocalRandom.current().nextDouble(1, 2)).setScale(3, BigDecimal.ROUND_UP));
 
         return result;
     }

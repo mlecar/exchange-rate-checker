@@ -1,5 +1,7 @@
 package com.mlc.exchange.rate.checker;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,13 +15,17 @@ public class ExchangeRate {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "currency_from")
+    @Column(name = "currencyFrom")
     private String from;
 
-    @Column(name = "currency_to")
+    @Column(name = "currencyTo")
     private String to;
 
-    private String quotationDate;
+    @Column(name = "quotationDate")
+    private String date;
+
+    private Date lastDateCheck;
+
     private double rate;
 
     public String getFrom() {
@@ -54,12 +60,19 @@ public class ExchangeRate {
         this.id = id;
     }
 
-    public String getQuotationDate() {
-        return quotationDate;
+    public String getDate() {
+        return date;
     }
 
-    public void setQuotationDate(String quotationDate) {
-        this.quotationDate = quotationDate;
+    public void setDate(String date) {
+        this.date = date;
     }
 
+    public Date getLastDateCheck() {
+        return lastDateCheck;
+    }
+
+    public void setLastDateCheck(Date lastDateCheck) {
+        this.lastDateCheck = lastDateCheck;
+    }
 }
