@@ -1,5 +1,6 @@
 package com.mlc.exchange.rate.checker;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -59,10 +60,13 @@ public class ExchangeRateManager {
         return fromTo;
     }
 
-    public Map<String, Object> getExchangeRate(String startDate, String endDate) {
+    public Map<String, Object> getExchangeRate(LocalDate startDate, LocalDate endDate) {
         List<Map<String, Object>> resultRates = new ArrayList<Map<String, Object>>();
 
-        List<ExchangeRate> rates = repository.findByDateBetween(startDate, endDate);
+        logger.info(startDate.toString());
+        logger.info(endDate.toString());
+
+        List<ExchangeRate> rates = repository.findByDateBetween(startDate.toString(), endDate.toString());
 
         for (ExchangeRate rate : rates) {
             Map<String, Object> result = new HashMap<String, Object>();
