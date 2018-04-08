@@ -1,5 +1,9 @@
 ## Service that checks exchange rates from Euro to USDollar continuously
 
+I am using the public exposed api from https://fixer.io/ to get the latest exchange rates
+
+http://api.fixer.io/latest?base=EUR
+
 ### Main services exposed
 
 #### Get the latest exchange rate
@@ -26,6 +30,7 @@ curl -X GET http://localhost:8080/exchange/rate/dateseries/2018-04-01/2018-04-06
 Response Status: 200
 Response Content Type: application/json
 Response Message Example:
+```
 {
    "rates":[
       {
@@ -56,6 +61,7 @@ Response Message Example:
    "from":"EUR",
    "to":"USD"
 }
+```
 
 ### Services exposed for testing some features
 
@@ -64,12 +70,13 @@ curl -X PUT http://localhost:8080/exchange/rate/historical/load
 
 Response Status: 201
 
-#### For testing purpose I exposed all entries from the database
+#### For testing purpose I exposed all entries from the H2 database
 curl -X GET http://localhost:8080/exchange/rate/all
 
 Response Status: 200
 Response Content Type: application/json
 Response Message Example:
+```
 [
    {
       "id":1,
@@ -104,4 +111,4 @@ Response Message Example:
       "rate":1.2234
    }
 ]
-
+```
