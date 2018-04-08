@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -20,9 +21,12 @@ public class ExchangeRateService {
     @Autowired
     private Gson gson;
 
+    @Value("${exchange.rate.provider.url}")
+    private String exchangeServiceProviderUrl;
+
     public Map<String, Object> exchangeRate(String from, String to) {
 
-        ResponseEntity<String> response = restTemplate.getForEntity("http://api.fixer.io/latest?base=" + from, String.class);
+        ResponseEntity<String> response = restTemplate.getForEntity(exchangeServiceProviderUrl + from, String.class);
         JsonElement rate = gson.fromJson(response.getBody(), JsonElement.class);
 
         Map<String, Object> result = new HashMap<String, Object>();
