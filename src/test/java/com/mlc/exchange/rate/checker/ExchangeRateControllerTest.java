@@ -36,22 +36,22 @@ public class ExchangeRateControllerTest {
 
     @Test
     public void invalidStartDate() throws Exception {
-        this.mockMvc.perform(get(baseContext + "/20180306/2018-03-06")).andExpect(status().isBadRequest());
+        this.mockMvc.perform(get(baseContext + "/dateseries/20180306/2018-03-06")).andExpect(status().isBadRequest());
     }
 
     @Test
     public void invalidEndDate() throws Exception {
-        this.mockMvc.perform(get(baseContext + "/2018-03-06/20180306")).andExpect(status().isBadRequest());
+        this.mockMvc.perform(get(baseContext + "/dateseries/2018-03-06/20180306")).andExpect(status().isBadRequest());
     }
 
     @Test
     public void validStartDateAndEndDate() throws Exception {
-        this.mockMvc.perform(get(baseContext + "/2018-03-06/2018-03-06")).andExpect(status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
+        this.mockMvc.perform(get(baseContext + "/dateseries/2018-03-06/2018-03-06")).andExpect(status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
     }
 
     @Test
     public void missingDate() throws Exception {
-        this.mockMvc.perform(get(baseContext + "/2018-03-06/")).andExpect(status().isNotFound());
+        this.mockMvc.perform(get(baseContext + "/dateseries/2018-03-06/")).andExpect(status().isNotFound());
     }
 
     @Test

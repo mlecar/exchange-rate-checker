@@ -1,13 +1,14 @@
 ## Service that checks exchange rates from Euro to USDollar continuously
+I am using the public exposed api from https://fixer.io/ to get the latest exchange rates. It will be exposed until June 2018.
+**http://api.fixer.io/latest?base=EUR**
 
-I am using the public exposed api from https://fixer.io/ to get the latest exchange rates
-
-http://api.fixer.io/latest?base=EUR
+### Exchange Rate Updates
+By default, each 30 seconds the update exchange rates are updated, but it is configurable
 
 ### Main services exposed
-
 #### Get the latest exchange rate
-curl -X GET http://localhost:8080/exchange/rate/
+Request: **GET /exchange/rate/**
+Request example: curl -X GET http://localhost:8080/exchange/rate/
 
 Response Status: 200
 Response Content Type: application/json
@@ -24,7 +25,8 @@ Response Message:
 ```
 
 #### Get the exchange rates from 2018-04-01 and 2018-04-06
-curl -X GET http://localhost:8080/exchange/rate/dateseries/2018-04-01/2018-04-06
+Request: **GET /exchange/rate/dateseries/{startDate}/{endDate}/**
+Request example: curl -X GET http://localhost:8080/exchange/rate/dateseries/2018-04-01/2018-04-06
 
 
 Response Status: 200
@@ -66,12 +68,14 @@ Response Message Example:
 ### Services exposed for testing some features
 
 #### To simplify test, I load some values from a file to get historical values
-curl -X PUT http://localhost:8080/exchange/rate/historical/load
+Request: **PUT /exchange/rate/historical/load**
+Request example: curl -X PUT http://localhost:8080/exchange/rate/historical/load
 
 Response Status: 201
 
 #### For testing purpose I exposed all entries from the H2 database
-curl -X GET http://localhost:8080/exchange/rate/all
+Request: **GET /exchange/rate/all**
+Request example: curl -X GET http://localhost:8080/exchange/rate/all
 
 Response Status: 200
 Response Content Type: application/json
