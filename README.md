@@ -12,7 +12,8 @@ java -D"interval.check.cron=*/2 * * * * ?" -jar target/exchange-rate-checker-1.0
 
 ### Main services exposed
 #### Get the latest exchange rate
-Request: **GET /exchange/rate/** 
+Request: **GET /exchange/rate/**
+
 Request example: curl -X GET http://localhost:8080/exchange/rate/
 
 Response Status: 200
