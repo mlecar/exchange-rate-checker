@@ -59,7 +59,7 @@ public class ExchangeRateController {
     @PutMapping(value = { "/historical/load", "/historical/load/" })
     public ResponseEntity<String> loadFile() throws FileNotFoundException, IOException {
 
-        Resource resource = resourceLoader.getResource("classpath:historical-exchange-rates.from.euro.to.usdollar.json");
+        Resource resource = resourceLoader.getResource("classpath:historical.exchange.rates.EUR.USD.json");
 
         exchangeRateManager.loadHistoricalRates(resource);
 

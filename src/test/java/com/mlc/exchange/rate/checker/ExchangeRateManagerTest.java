@@ -98,7 +98,7 @@ public class ExchangeRateManagerTest {
 
     @Test
     public void successHistoricalExchangeRatesLoad() throws FileNotFoundException, IOException {
-        Resource resource = new ClassPathResource("historical-exchange-rates.from.euro.to.usdollar.json");
+        Resource resource = new ClassPathResource("historical.exchange.rates.EUR.USD.json");
 
         exchangeManager.loadHistoricalRates(resource);
     }

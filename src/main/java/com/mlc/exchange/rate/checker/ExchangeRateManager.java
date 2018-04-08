@@ -1,8 +1,8 @@
 package com.mlc.exchange.rate.checker;
 
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -75,8 +75,8 @@ public class ExchangeRateManager {
         List<ExchangeRate> rates = repository.findByDateBetween(startDate.toString(), endDate.toString());
 
         Map<String, Object> fromTo = new HashMap<String, Object>();
-        fromTo.put("from", rates.get(0).getFrom());
-        fromTo.put("to", rates.get(0).getTo());
+        fromTo.put("from", from);
+        fromTo.put("to", to);
         fromTo.put("rates", resultRates);
 
         for (ExchangeRate rate : rates) {
@@ -89,7 +89,7 @@ public class ExchangeRateManager {
     }
 
     public void loadHistoricalRates(Resource resource) throws FileNotFoundException, IOException {
-        JsonReader reader = new JsonReader(new FileReader(resource.getFile()));
+        JsonReader reader = new JsonReader(new InputStreamReader(resource.getInputStream()));
 
         JsonElement historical = new Gson().fromJson(reader, JsonElement.class);
 

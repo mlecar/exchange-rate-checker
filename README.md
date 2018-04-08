@@ -2,8 +2,13 @@
 I am using the public exposed api from https://fixer.io/ to get the latest exchange rates. It will be exposed until June 2018.
 **http://api.fixer.io/latest?base=EUR**
 
+### How to execute?
+java -jar target/exchange-rate-checker-1.0.0-SNAPSHOT.jar
+
 ### Exchange Rate Updates
-By default, each 30 seconds the update exchange rates are updated, but it is configurable
+By default, each 30 seconds the update exchange rates are updated, but it is configurable by changing the cron through command line like this:
+
+java -D"interval.check.cron=*/2 * * * * ?" -jar target/exchange-rate-checker-1.0.0-SNAPSHOT.jar
 
 ### Main services exposed
 #### Get the latest exchange rate
