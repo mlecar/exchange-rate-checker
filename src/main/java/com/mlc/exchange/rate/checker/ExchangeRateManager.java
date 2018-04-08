@@ -57,14 +57,17 @@ public class ExchangeRateManager {
     public Map<String, Object> getLatestExchangeRate() {
         ExchangeRate latestRate = repository.findFirstByOrderByLastDateCheckDesc();
 
-        Map<String, Object> rates = new HashMap<String, Object>();
-        rates.put("date", latestRate.getDate());
-        rates.put("rate", latestRate.getRate());
-
         Map<String, Object> fromTo = new HashMap<String, Object>();
-        fromTo.put("from", latestRate.getFrom());
-        fromTo.put("to", latestRate.getTo());
-        fromTo.put("rates", rates);
+
+        if (latestRate != null) {
+            Map<String, Object> rates = new HashMap<String, Object>();
+            rates.put("date", latestRate.getDate());
+            rates.put("rate", latestRate.getRate());
+
+            fromTo.put("from", latestRate.getFrom());
+            fromTo.put("to", latestRate.getTo());
+            fromTo.put("rates", rates);
+        }
 
         return fromTo;
     }
