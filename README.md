@@ -16,9 +16,7 @@ Request: **GET /exchange/rate/**
 
 Request example: curl -X GET http://localhost:8080/exchange/rate/
 
-Response Status: 200
-Response Content Type: application/json
-Response Message:
+Response **200 - application/json**:
 ```
 {
    "rates":{
@@ -34,9 +32,7 @@ Response Message:
 Request: **GET /exchange/rate/dateseries/{startDate}/{endDate}/**
 Request example: curl -X GET http://localhost:8080/exchange/rate/dateseries/2018-04-01/2018-04-06
 
-Response Status: 200
-Response Content Type: application/json
-Response Message Example:
+Response **200 - application/json**:
 ```
 {
    "rates":[
@@ -74,17 +70,17 @@ Response Message Example:
 
 #### To simplify test, I load some values from a file to get historical values
 Request: **PUT /exchange/rate/historical/load**
+
 Request example: curl -X PUT http://localhost:8080/exchange/rate/historical/load
 
-Response Status: 201
+Response **201**
 
 #### For testing purpose I exposed all entries from the H2 database
 Request: **GET /exchange/rate/all**
+
 Request example: curl -X GET http://localhost:8080/exchange/rate/all
 
-Response Status: 200
-Response Content Type: application/json
-Response Message Example:
+Response **200 - application/json**:
 ```
 [
    {
