@@ -33,7 +33,6 @@ Response Message:
 Request: **GET /exchange/rate/dateseries/{startDate}/{endDate}/**
 Request example: curl -X GET http://localhost:8080/exchange/rate/dateseries/2018-04-01/2018-04-06
 
-
 Response Status: 200
 Response Content Type: application/json
 Response Message Example:
