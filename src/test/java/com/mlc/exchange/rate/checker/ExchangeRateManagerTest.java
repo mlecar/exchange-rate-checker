@@ -76,6 +76,15 @@ public class ExchangeRateManagerTest {
     }
 
     @Test
+    public void noExchangeRates() {
+        when(repository.findFirstByOrderByLastDateCheckDesc()).thenReturn(null);
+
+        Map<String, Object> result = exchangeManager.getLatestExchangeRate();
+
+        assertEquals(result.size(), 0);
+    }
+
+    @Test
     public void successLatestExchangeRate() {
         ExchangeRate rate = new ExchangeRate();
         rate.setDate("2018-08-04");
