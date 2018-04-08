@@ -37,7 +37,7 @@ public class ExchangeRateServiceTest {
     }
 
     @Test
-    public void successExchangeRate() {
+    public void successGetFromExchangeRateServiceProvider() {
         Map<String, Object> expected = new HashMap<String, Object>();
         expected.put("date", "2018-04-03");
         Map<String, Object> rate = new HashMap<String, Object>();

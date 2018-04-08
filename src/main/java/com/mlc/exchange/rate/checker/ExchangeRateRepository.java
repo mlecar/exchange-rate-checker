@@ -10,6 +10,6 @@ public interface ExchangeRateRepository extends CrudRepository<ExchangeRate, Lon
     ExchangeRate findFirstByOrderByLastDateCheckDesc();
 
     @Query("SELECT rate FROM ExchangeRate rate WHERE rate.date >= ?1 AND rate.date <= ?2 AND rate.lastDateCheck = (SELECT MAX(lastCheck.lastDateCheck) FROM ExchangeRate lastCheck WHERE lastCheck.from = rate.from AND lastCheck.to = rate.to AND lastCheck.date = rate.date)")
-    List<ExchangeRate> findByDateBetween(String startDate, String finalDate);
+    List<ExchangeRate> findByDateBetween(String startDate, String endDate);
 
 }

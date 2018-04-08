@@ -75,4 +75,10 @@ public class ExchangeRate {
     public void setLastDateCheck(Date lastDateCheck) {
         this.lastDateCheck = lastDateCheck;
     }
+
+    @Override
+    public String toString() {
+        return "ExchangeRate [id=" + id + ", from=" + from + ", to=" + to + ", date=" + date + ", lastDateCheck=" + lastDateCheck + ", rate=" + rate + "]";
+    }
+
 }

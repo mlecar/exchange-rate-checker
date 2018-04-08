@@ -3,8 +3,6 @@ package com.mlc.exchange.rate.checker;
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,11 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -49,40 +44,11 @@ public class GlobalExceptionHandler {
     }
 
     @ResponseBody
-    @ExceptionHandler({ MethodArgumentNotValidException.class })
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Object badRequest(HttpServletRequest request, MethodArgumentNotValidException e) throws IOException {
-        BindingResult bindingResult = e.getBindingResult();
-
-        StringBuilder sb = new StringBuilder();
-        for (FieldError error : bindingResult.getFieldErrors()) {
-            sb.append(error.getField() + " " + error.getDefaultMessage() + "\n");
-        }
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.TEXT_PLAIN);
-        return new ResponseEntity<String>(sb.toString(), headers, HttpStatus.BAD_REQUEST);
-    }
-
-    @ResponseBody
-    @ExceptionHandler({ ConstraintViolationException.class })
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Object badRequest(HttpServletRequest request, ConstraintViolationException e) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        for (ConstraintViolation<?> error : e.getConstraintViolations()) {
-            sb.append(error.getMessage());
-        }
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.TEXT_PLAIN);
-        System.out.println(sb.toString());
-        return new ResponseEntity<String>(sb.toString(), headers, HttpStatus.BAD_REQUEST);
-    }
-
-    @ResponseBody
     @ExceptionHandler({ MethodArgumentTypeMismatchException.class })
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Object badRequest(HttpServletRequest request, MethodArgumentTypeMismatchException e) throws IOException {
         StringBuilder sb = new StringBuilder();
-        sb.append(e.getName() + "[" + e.getValue() + "] must be yyyyMMdd");
+        sb.append(e.getName() + "[" + e.getValue() + "] must be yyyy-MM-dd");
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.TEXT_PLAIN);
         return new ResponseEntity<String>(sb.toString(), headers, HttpStatus.BAD_REQUEST);

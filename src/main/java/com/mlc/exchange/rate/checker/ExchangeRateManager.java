@@ -1,25 +1,34 @@
 package com.mlc.exchange.rate.checker;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.stream.JsonReader;
 
 @Component
 public class ExchangeRateManager {
     private static Logger logger = LoggerFactory.getLogger(ExchangeRateManager.class);
 
     @Autowired
-    private MockedExchangeRateService exchangeRateService;
+    private ExchangeRateService exchangeRateService;
 
     @Autowired
     private ExchangeRateRepository repository;
@@ -63,10 +72,12 @@ public class ExchangeRateManager {
     public Map<String, Object> getExchangeRate(LocalDate startDate, LocalDate endDate) {
         List<Map<String, Object>> resultRates = new ArrayList<Map<String, Object>>();
 
-        logger.info(startDate.toString());
-        logger.info(endDate.toString());
-
         List<ExchangeRate> rates = repository.findByDateBetween(startDate.toString(), endDate.toString());
+
+        Map<String, Object> fromTo = new HashMap<String, Object>();
+        fromTo.put("from", rates.get(0).getFrom());
+        fromTo.put("to", rates.get(0).getTo());
+        fromTo.put("rates", resultRates);
 
         for (ExchangeRate rate : rates) {
             Map<String, Object> result = new HashMap<String, Object>();
@@ -74,13 +85,30 @@ public class ExchangeRateManager {
             result.put("rate", rate.getRate());
             resultRates.add(result);
         }
-
-        Map<String, Object> fromTo = new HashMap<String, Object>();
-        fromTo.put("from", rates.get(0).getFrom());
-        fromTo.put("to", rates.get(0).getTo());
-        fromTo.put("rates", resultRates);
-
         return fromTo;
+    }
+
+    public void loadHistoricalRates(Resource resource) throws FileNotFoundException, IOException {
+        JsonReader reader = new JsonReader(new FileReader(resource.getFile()));
+
+        JsonElement historical = new Gson().fromJson(reader, JsonElement.class);
+
+        Set<Map.Entry<String, JsonElement>> rates = historical.getAsJsonObject().get("rates").getAsJsonObject().entrySet();
+
+        for (Map.Entry<String, JsonElement> e : rates) {
+            ExchangeRate rate = new ExchangeRate();
+            rate.setDate(e.getKey());
+            rate.setRate(e.getValue().getAsJsonObject().get("USD").getAsDouble());
+            rate.setLastDateCheck(new Date());
+            rate.setFrom("EUR");
+            rate.setTo("USD");
+            repository.save(rate);
+        }
+
+    }
+
+    public Iterable<ExchangeRate> findAll() {
+        return repository.findAll();
     }
 
 }
