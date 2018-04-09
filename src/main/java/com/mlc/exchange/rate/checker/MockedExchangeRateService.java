@@ -7,10 +7,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MockedExchangeRateService {
+@Profile("mock")
+public class MockedExchangeRateService implements ExchangeRateService {
 
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 

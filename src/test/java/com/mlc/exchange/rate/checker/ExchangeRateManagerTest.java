@@ -2,6 +2,8 @@ package com.mlc.exchange.rate.checker;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -32,7 +34,7 @@ import com.google.gson.JsonElement;
 public class ExchangeRateManagerTest {
 
     @Mock
-    private ExchangeRateService exchangeRateService;
+    private ExchangeRateServiceImpl exchangeRateService;
 
     @Mock
     private ExchangeRateRepository repository;
@@ -73,6 +75,18 @@ public class ExchangeRateManagerTest {
         assertEquals(to, captor.getValue().getTo());
         assertEquals(expected.get("date"), captor.getValue().getDate());
         assertEquals(expected.get("rate"), captor.getValue().getRate());
+    }
+
+    @Test
+    public void emptyResponseFromExchangeRateServiceProvider() {
+        Map<String, Object> expected = new HashMap<>();
+
+        when(exchangeRateService.exchangeRate(from, to)).thenReturn(expected);
+
+        exchangeManager.updateExchangeRates();
+
+        verify(repository, never()).save(any(ExchangeRate.class));
+
     }
 
     @Test

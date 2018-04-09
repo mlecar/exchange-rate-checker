@@ -16,14 +16,16 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 
-public class ExchangeRateServiceTest {
+public class ExchangeRateServiceImplTest {
 
     @InjectMocks
-    private ExchangeRateService exchangeRateService;
+    private ExchangeRateServiceImpl exchangeRateService;
 
     @Mock
     private RestTemplate restTemplate;
@@ -50,6 +52,26 @@ public class ExchangeRateServiceTest {
 
         assertEquals(rates.get("date"), expected.get("date"));
         assertEquals(rates.get("rate"), "1.3");
+    }
+
+    @Test
+    public void urlNotFound() {
+
+        when(restTemplate.getForEntity(anyString(), eq(String.class))).thenThrow(new RestClientResponseException(" an error message", HttpStatus.NOT_FOUND.value(), "NOT FOUND", null, null, null));
+
+        Map<String, Object> rates = exchangeRateService.exchangeRate("EUR", "USD");
+
+        assertEquals(rates.size(), 0);
+    }
+
+    @Test
+    public void unknownHostException() {
+
+        when(restTemplate.getForEntity(anyString(), eq(String.class))).thenThrow(new ResourceAccessException(" an error message"));
+
+        Map<String, Object> rates = exchangeRateService.exchangeRate("EUR", "USD");
+
+        assertEquals(rates.size(), 0);
     }
 
 }

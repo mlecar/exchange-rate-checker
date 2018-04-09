@@ -5,10 +5,16 @@ I am using the public exposed api from https://fixer.io/ to get the latest excha
 ### How to execute?
 java -jar target/exchange-rate-checker-1.0.0-SNAPSHOT.jar
 
-### Exchange Rate Updates
-By default, each 30 seconds the exchange rates are updated, but it is configurable by changing the cron through command line like this:
+### Mocked exchange service provider
+If you want to use mocked exchange service provider, just execute as follows:
 
-java -D"interval.check.cron=*/2 * * * * ?" -jar target/exchange-rate-checker-1.0.0-SNAPSHOT.jar
+java -Dspring.profiles.active=mock -jar target/exchange-rate-checker-1.0.1-SNAPSHOT.jar
+
+### Exchange Rate Updates
+By default, each 5 seconds the exchange rates are updated, but it is configurable by changing the cron through command line like this:
+
+each 30 seconds
+java -D"interval.check.cron=*/30 * * * * ?" -jar target/exchange-rate-checker-1.0.0-SNAPSHOT.jar
 
 ### Main services exposed
 #### Get the latest exchange rate

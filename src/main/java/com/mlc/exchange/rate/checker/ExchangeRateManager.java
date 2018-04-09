@@ -44,14 +44,16 @@ public class ExchangeRateManager {
         logger.debug("Executing scheduler");
         Map<String, Object> rate = exchangeRateService.exchangeRate(from, to);
 
-        ExchangeRate exchanteRate = new ExchangeRate();
-        exchanteRate.setFrom(from);
-        exchanteRate.setTo(to);
-        exchanteRate.setRate(Double.valueOf(rate.get("rate").toString()));
-        exchanteRate.setDate(rate.get("date").toString());
-        exchanteRate.setLastDateCheck(new Date());
+        if (rate.size() > 0) {
+            ExchangeRate exchanteRate = new ExchangeRate();
+            exchanteRate.setFrom(from);
+            exchanteRate.setTo(to);
+            exchanteRate.setRate(Double.valueOf(rate.get("rate").toString()));
+            exchanteRate.setDate(rate.get("date").toString());
+            exchanteRate.setLastDateCheck(new Date());
 
-        repository.save(exchanteRate);
+            repository.save(exchanteRate);
+        }
     }
 
     public Map<String, Object> getLatestExchangeRate() {
